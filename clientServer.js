@@ -6,7 +6,7 @@
  *      1. Accessing VM information using unauthenticated API
  *      2. Service Level Authentication
  * Developed by 'Group 39'
- * Write Names of All Members
+ * Vasiliki Sideri Lampretsa, Gabriela Hernandez, Stefan Su
  */
 // =============================================================================
 /**
@@ -71,25 +71,29 @@ router.route('/exercise1_task1')
         
         // attach listener to userdata
         userdata.stdout.on('data', (data) => {
+            var numUsers = 0;
             var users = [];
             var numDisks = 0;
             var disksizes = [];
-            
+
             datarows = data.split('\n');
 
             var firstCommand = true;
 
             for (i = 0; i < datarows.length; i++) {
                 row = datarows[i].split(' ');
-                if (row[0] != '' && firstCommand) users.push(row[0]);
+                if (row[0] != '' && firstCommand) {
+                    numUsers++;
+                    users.push(row[0]);
+                }
                 if (row[0] == '1nextcommand') firstCommand = false;
                 if (row[0] != '' && row[0] != 'SIZE' && !firstCommand ) {
                     numDisks++;
                     disksizes.push(row[0]);
                 }
             }
-            
-            exercise_1_Message.numberUsers = datarows.length - 1;            
+
+            exercise_1_Message.numberUsers = numUsers;            
             exercise_1_Message.userNames = users;
             exercise_1_Message.numStorageDisks = numDisks;
             exercise_1_Message.storageDisksInfo = disksizes;
