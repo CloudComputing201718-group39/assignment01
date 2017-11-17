@@ -24,25 +24,23 @@ const router = express.Router();
 /**
  * Middleware to use for all requests
  */
-router.use(function(req, res, next) {
+router.use((req, res, next) => {
     /**
      * Logs can be printed here while accessing any routes
      */
-    console.log('Accessing Exercises Routes');
     next();
 });
 /**
  * Base route of the router : to make sure everything is working check http://localhost:8080/exercises)
  */
-router.get('/', function(req, res) {
+router.get('/', (req, res) => {
     res.json({ message: 'Welcome to Cloud Computing Exercises API!'});
 });
 /**
  * Exercise 1: Task 1 Route (Accessing VM information, This is also unauthenticated API)
  */
 router.route('/exercise1_task1')
-    .get(function(req, res)
-    {
+    .get((req, res) => {
         /**
          * Hint : http://nodejs.org/api.html#_child_processes
          */
@@ -58,13 +56,46 @@ router.route('/exercise1_task1')
          */
         // =================================================================================================================
         let exercise_1_Message = {
-                message: 'exercise_1',
-                numberUsers: 'x',
-                userNames:['x','y'],
-                numStorageDisks:'xy',
-                storageDisksInfo:['size1', 'size2', 'size3']
-            };
-        res.json(exercise_1_Message);
+            message: 'exercise_1',
+            numberUsers: 'x',
+            userNames:['x','y'],
+            numStorageDisks:'xy',
+            storageDisksInfo:['size1', 'size2', 'size3']
+        };
+        var userdata = exec('who && echo 1nextcommand && lsblk -o SIZE', (err, stdout, stderr) => {
+            if(err) {
+                console.log('exec error: ' + err);
+            }
+            console.log(stdout);
+        });
+        
+        // attach listener to userdata
+        userdata.stdout.on('data', (data) => {
+            var users = [];
+            var numDisks = 0;
+            var disksizes = [];
+            
+            datarows = data.split('\n');
+
+            exercise_1_Message.numberUsers = datarows.length - 1;
+            var firstCommand = true;
+
+            for (i = 0; i < datarows.length; i++) {
+                row = datarows[i].split(' ');
+                if (row[0] != '' && firstCommand) users.push(row[0]);
+                if (row[0] == '1nextcommand') firstCommand = false;
+                if (row[0] != '' && row[0] != 'SIZE' && !firstCommand ) {
+                    numDisks++;
+                    disksizes.push(row[0]);
+                }
+            }
+            
+            exercise_1_Message.userNames = users;
+            exercise_1_Message.numStorageDisks = numDisks;
+            exercise_1_Message.storageDisksInfo = disksizes;
+
+            res.json(exercise_1_Message);
+        });
     });
 /**
  * Exercise 1: Task 2 Route (Service Level Authentication)
