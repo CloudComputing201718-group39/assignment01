@@ -77,7 +77,6 @@ router.route('/exercise1_task1')
             
             datarows = data.split('\n');
 
-            exercise_1_Message.numberUsers = datarows.length - 1;
             var firstCommand = true;
 
             for (i = 0; i < datarows.length; i++) {
@@ -90,6 +89,7 @@ router.route('/exercise1_task1')
                 }
             }
             
+            exercise_1_Message.numberUsers = datarows.length - 1;            
             exercise_1_Message.userNames = users;
             exercise_1_Message.numStorageDisks = numDisks;
             exercise_1_Message.storageDisksInfo = disksizes;
