@@ -136,14 +136,16 @@ router.route('/exercise1_task2')
          * first value matches the expected username
          * second value the expected password
          */
-        if (false) {
-            res.end('Unsuccessful Authentication');
-        }
-        else {
+        if (auth[0] == 'CCS' && auth[1] == 'CCS_exercise1_task2')
+        {
             /**
              * Processing can be continued here, user was authenticated
-             */
+            */
             res.send('Successful Authentication');
+         }
+        else 
+        {
+            res.end('Unsuccessful Authentication');
         }
     });
 /**
