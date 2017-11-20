@@ -105,8 +105,7 @@ router.route('/exercise1_task1')
  * Exercise 1: Task 2 Route (Service Level Authentication)
  */
 router.route('/exercise1_task2')
-    .get(function(req, res)
-    {
+    .get((req, res) => {
         // ================================================================================================================
         /**
          * TO DO
@@ -119,8 +118,7 @@ router.route('/exercise1_task2')
         /**
          * check whether an autorization header was send
          */
-        if (req.headers.authorization)
-        {
+        if (req.headers.authorization) {
             /**
              * only accepting basic auth, so:
              * cut the starting 'Basic ' from the header
@@ -129,22 +127,24 @@ router.route('/exercise1_task2')
              * should result in an array
              */
             auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
+            console.log(auth)
         }
         /**
-         *  checks if:
+         * checks if:
          * auth array exists
          * first value matches the expected username
          * second value the expected password
          */
-        if (auth[0] == 'CCS' && auth[1] == 'CCS_exercise1_task2')
-        {
+        if (auth) {
             /**
              * Processing can be continued here, user was authenticated
             */
-            res.send('Successful Authentication');
+            if (auth[0] == 'CCS' && auth[1] == 'CCS_exercise1_task2')
+                res.send('Successful Authentication');
+            else
+                res.send('auth exists, but Unsuccessful Authentication')
          }
-        else 
-        {
+        else {
             res.end('Unsuccessful Authentication');
         }
     });
