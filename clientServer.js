@@ -83,12 +83,12 @@ router.route('/exercise1_task1')
             for (i = 0; i < datarows.length; i++) {
                 row = datarows[i].split(' ');
                 console.log('row[0]: ' + row[0]);
-                if (row[0] != '' && firstCommand) {
+                if (row[0] == '1nextcommand') firstCommand = false;
+                else if (row[0] != '' && firstCommand) {
                     numUsers++;
                     users.push(row[0]);
                 }
-                if (row[0] == '1nextcommand') firstCommand = false;
-                if (row[0] != '' && row[0] != 'SIZE' && !firstCommand ) {
+                else if (row[0] != '' && row[0] != 'SIZE' && !firstCommand ) {
                     numDisks++;
                     disksizes.push(row[0]);
                 }
