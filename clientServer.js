@@ -82,6 +82,7 @@ router.route('/exercise1_task1')
 
             for (i = 0; i < datarows.length; i++) {
                 row = datarows[i].split(' ');
+                console.log('row[0]: ' + row[0]);
                 if (row[0] != '' && firstCommand) {
                     numUsers++;
                     users.push(row[0]);
