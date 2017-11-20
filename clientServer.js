@@ -122,7 +122,7 @@ router.route('/exercise1_task2')
         if (req.headers.authorization)
         {
             /**
-             *  only accepting basic auth, so:
+             * only accepting basic auth, so:
              * cut the starting 'Basic ' from the header
              * decode the base64 encoded username:password
              * split the string at the colon
@@ -159,12 +159,3 @@ app.use('/exercises', router);
  */
 app.listen(port);
 console.log('Server started and listening on port ' + port);
-
-
-
-
-
-
-
-
-
